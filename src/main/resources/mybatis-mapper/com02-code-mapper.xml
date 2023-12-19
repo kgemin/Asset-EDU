@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+      
+<mapper namespace="kr.co.kfs.assetedu.repository.Com02CodeRepository">
+	<select id="selectList" parameterType="QueryAttr" resultType="Com02Code">
+		select
+			com02_com_cd		AS com02ComCd
+			, com02_dtl_cd		AS com02DtlCd
+			, com02_code_nm		AS com02CodeNm
+			, com02_code_type	AS com02CodeType
+			, com02_seq			AS com02Seq
+			, com02_use_yn		AS com02UseYn
+			, com02_note		AS com02Note
+		from
+			com02_code
+		order by 
+			com02_com_cd, com02_seq, com02_dtl_cd
+	</select>
+</mapper>

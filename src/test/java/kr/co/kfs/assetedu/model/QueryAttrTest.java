@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-class ConditionTest {
+class QueryAttrTest {
 
 	@Test
 	void test() {
-		Condition condition = new Condition();
+		QueryAttr condition = new QueryAttr();
 		assertNotNull( condition);
 	}
 	@Test

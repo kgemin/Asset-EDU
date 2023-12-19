@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+      
+<mapper namespace="kr.co.kfs.assetedu.repository.Sys01UserRepository">
+     <select id="selectList" parameterType="QueryAttr" resultType="Sys01User">
+     	select
+     		sys01_user_id,
+     		sys01_user_nm,
+     		sys01_pwd,
+     		tel,
+     		email
+     	from
+     		sys01_user
+		order by sys01_user_nm
+     	
+     </select>
+     
+     <insert id="insert" parameterType="Sys01User">
+     	insert into sys01_user
+     				( sys01_user_id, sys01_user_nm, sys01_pwd, tel, email)
+     	values
+     				( #{sys01UserId}, #{sys01UserNm}, #{sys01Pwd}, #{tel}, #{email})
+     </insert>
+     
+     <select id="selectOne" parameterType="Sys01User" resultType="Sys01User">
+     	select
+     		sys01_user_id,
+     		sys01_user_nm,
+     		sys01_pwd,
+     		tel,
+     		email
+     	from
+     		sys01_user
+     	WHERE 1=1
+		<if test="sys01UserId != null">
+	       	AND sys01_user_id = #{sys01UserId}
+		</if>
+     </select>
+     
+     <update id="update" parameterType="Sys01User">
+     	update
+     		sys01_user
+     	set
+     		sys01_user_id = #{sys01UserId},
+     		sys01_user_nm = #{sys01UserNm},
+     		sys01_pwd = #{sys01Pwd},
+     		tel = #{tel},
+     		email = #{email}
+     	where 1=1
+     	and sys01_user_id = #{sys01UserId}
+     </update>
+     
+     <delete id="delete" parameterType="Sys01User">
+     	delete from
+     		sys01_user
+     	where 1=1
+     		and sys01_user_id = #{sys01UserId}
+     </delete>
+</mapper>
