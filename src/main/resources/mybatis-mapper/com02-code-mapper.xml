@@ -4,6 +4,38 @@
       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
       
 <mapper namespace="kr.co.kfs.assetedu.repository.Com02CodeRepository">
+
+	<sql id="whereCondition">
+		<!--    검색조건 -->
+   		<if test="com02ComCd != null and com02ComCd != ''">
+	       	AND com02_com_cd  = #{com02ComCd}
+		</if>
+		<if test="com02DtlCd != null and com02DtlCd != ''">
+	       	AND com02_dtl_cd = #{com02DtlCd}
+		</if>
+		<if test="com02CodeType != null and com02CodeType !=''">
+	       	AND com02_code_type = #{com02CodeType}
+		</if>
+        <if test="com02UseYn != null and  com02UseYn != ''">
+            AND COALESCE(com02_use_yn,'false') = #{com02UseYn}
+        </if>
+        <if test="com02Note != null and com02Note != ''">
+            AND com02_note = #{com02Note}
+        </if>
+        <if test="searchText != null and  searchText != ''">
+            AND concat(com02_code_nm,com02_com_cd, com02_com_cd) like concat('%',#{searchText},'%')
+        </if>
+	</sql>
+	
+	<select id="selectCount" parameterType="QueryAttr" resultType="Integer">
+		select
+			count(*) as count
+		from
+			com02_code
+		where 1=1
+		<include refid="whereCondition" />
+	</select>
+
 	<select id="selectList" parameterType="QueryAttr" resultType="Com02Code">
 		select
 			com02_com_cd		AS com02ComCd
@@ -15,7 +47,70 @@
 			, com02_note		AS com02Note
 		from
 			com02_code
+		where 1=1
+		<include refid="whereCondition" />
 		order by 
 			com02_com_cd, com02_seq, com02_dtl_cd
+		 <if test="offset != null and offset != null">
+	      	OFFSET #{offset}
+		 </if>   
+		 <if test="limit != null and limit != null">
+		 	LIMIT #{limit}
+		 </if>
 	</select>
+	
+	<select id="selectOne" parameterType="Com02Code" resultType="Com02Code">
+		select
+			com02_com_cd,
+			com02_dtl_cd,
+			com02_code_nm,
+			com02_code_type,
+			com02_seq,
+			com02_use_yn,
+			com02_note
+		from
+			com02_code
+		where 1=1
+			and com02_com_cd = #{com02ComCd}
+			and com02_dtl_cd = #{com02DtlCd}
+	</select>
+	
+	<select id="selectTrList" parameterType="String" resultType="Com02Code">
+		select
+			
+	</select>
+	
+	<insert id="insert" parameterType="Com02Code">
+		insert into public.com02_code(
+			com02_dtl_cd, com02_dtl_cd, com02_code_nm, com02_code_type, com02_seq, com02_use_yn, com02_note
+		)
+		values (
+			#{com02ComCd}, #{com02DtlCd}, #{com02CodeNm}, #{com02CodeType}, #{com02Seq}, #{com02UseYn}, #{com02Note}
+		);
+	</insert>
+	
+	<update id="update" parameterType="Com02Code">
+		update
+			com02_code
+		set
+			com02_dtl_cd = #{com02ComCd},
+			com02_dtl_cd = #{com02DtlCd},
+			com02_code_nm = #{com02CodeNm},
+			com02_code_type = #{com02CodeType},
+			com02_seq = #{com02Seq},
+			com02_use_yn = #{com02UseYn},
+			com02_note = #{com02Note}
+		where 1=1
+			and com02_com_cd = #{com02ComCd}
+			and com02_dtl_cd = #{com02DtlCd}
+	</update>
+	
+	<delete id="delete" parameterType="Com02Code">
+		delete from com02_code
+		where 1=1
+			and com02_com_cd = #{com02ComCd}
+			<if test="com02DtlCd != null and com02DtlCd != ''">
+			and com02_dtl_cd = #{com02DtlCd}
+			</if>
+	</delete>
 </mapper>

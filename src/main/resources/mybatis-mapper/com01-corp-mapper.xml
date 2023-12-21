@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+      
+<mapper namespace="kr.co.kfs.assetedu.repository.Com01CorpRepository">
+
+<sql id="whereQueryAttr">
+		/** 기관 검색 조건 */
+		<if test="com01CorpCd != null and com01CorpCd != ''">
+	       	AND com01_corp_cd = #{com01CorpCd}
+		</if>
+		<if test="searchText != null and searchText != ''">
+	       	AND upper(concat(com01_corp_cd,com01_corp_nm,com01_corp_type_nm)) like upper(concat('%', #{searchText}, '%'))
+		</if>
+		
+</sql>
+
+<select id="selectList" parameterType="QueryAttr" resultType="Com01Corp">
+	select
+		com01_corp_cd,
+		com01_corp_nm,
+		com01_corp_type,
+		com01_corp_enm,
+		com01_extn_corp_cd,
+		com01_corp_type_nm
+	from (
+		select com01_corp.*
+				, f_com_nm('CorpType', com01_corp_type) as com01_corp_type_nm
+				from com01_corp
+	) t
+	where 1=1
+	<include refid="whereQueryAttr" />
+		order by com01_corp_cd, com01_corp_nm, com01_corp_type
+		 <if test="pageAttr != null ">
+	      	OFFSET ${pageAttr.offset}
+		 </if>
+		 <if test="pageAttr != null">
+		 	LIMIT ${pageAttr.limit}
+		 </if>
+</select>
+
+<select id="selectCount" parameterType="QueryAttr" resultType="Long">
+	select
+		count(*) as count
+	from (
+		select com01_corp.*
+				, f_com_nm('CorpType', com01_corp_type) as com01_corp_type_nm
+		from com01_corp
+	) t
+	where 1=1
+	<include refid="whereQueryAttr" />
+</select>
+
+<select id="selectOne" parameterType="Com01Corp" resultType="Com01Corp">
+	select
+		com01_corp_cd,
+		com01_corp_nm,
+		com01_corp_type,
+		com01_corp_enm,
+		com01_extn_corp_cd,
+		com01_corp_type_nm
+	from (
+		select com01_corp.*
+               , f_com_nm('CorpType', com01_corp_type) as com01_corp_type_nm
+        from com01_corp
+	) t
+		where 1=1
+	<if test="com01CorpCd != null">
+	       	AND com01_corp_cd = #{com01CorpCd}
+		</if>
+</select>
+
+<insert id="insert" parameterType="Com01Corp">
+	insert into com01_corp(
+				com01_corp_cd, com01_corp_nm, com01_corp_type, com01_corp_enm, com01_extn_corp_cd
+	)
+	values(
+				#{com01CorpCd}, #{com01CorpNm}, #{com01CorpType}, #{com01CorpEnm}, #{com01ExtnCorpCd}
+	);
+</insert>
+
+<update id="update" parameterType="Com01Corp">
+	update
+		com01_corp
+	set
+		com01_corp_cd = #{com01CorpCd},
+		com01_corp_nm = #{com01CorpNm},
+		com01_corp_type = #{com01CorpType},
+		com01_corp_enm = #{com01CorpEnm},
+		com01_extn_corp_cd = #{com01ExtnCorpCd}
+	where 1=1
+	and com01_corp_cd = #{com01CorpCd}
+</update>
+
+<delete id="delete" parameterType="Com01Corp">
+	delete from com01_corp
+	where 1=1
+	and com01_corp_cd = #{com01CorpCd}
+</delete>
+
+</mapper>
