@@ -5,6 +5,16 @@
       
 <mapper namespace="kr.co.kfs.assetedu.repository.Itm01ItemRepository">
 
+	<sql id="whereCondition">
+		<!--    검색조건 -->
+   		<if test="itm01ItemCd != null">
+	       	AND itm01_item_cd = #{itm01ItemCd}
+		</if>
+        <if test="searchText != null">
+            AND upper(concat(itm01_item_cd,itm01_item_nm,itm01_item_enm,itm01_short_cd)) like concat('%',upper(#{searchText}),'%')
+        </if>
+    </sql>
+
 <select id="selectList" parameterType="QueryAttr" resultType="Itm01Item">
 	select
 		itm01_item_cd
@@ -19,6 +29,92 @@
 		, itm01_iss_co_cd
 	from
 		itm01_item
+	where 1=1
+		<include refid="whereCondition" />
 </select>
+
+<select id="selectCount" parameterType="QueryAttr" resultType="Long">
+	select
+		count(*) as count
+	from
+		itm01_item
+	where 1=1
+		<include refid="whereCondition"/>
+</select>
+
+<select id="selectOne" parameterType="Itm01Item" resultType="Itm01Item">
+	select
+		itm01_item_cd				as itm01ItemCd
+		, itm01_item_nm				as itm01ItemNm
+		, itm01_item_enm			as itm01ItemEnm
+		, itm01_short_cd			as itm01ShortCd
+		, itm01_iss_type			as itm01IssType
+		, itm01_stk_type			as itm01StkType
+		, itm01_list_type			as itm01ListType
+		, itm01_market_type			as itm01MarketType
+		, itm01_par					as itm01Par
+		, itm01_iss_co_cd			as itm01IssCoCd
+	from
+		itm01_item
+	where 1=1
+		<if test="itm01ItemCd != null">
+		and itm01_item_cd = #{itm01ItemCd}
+		</if>
+</select>
+
+<select id="selectByItemCode" parameterType="String" resultType="Itm01Item">
+	select
+		itm01_item_cd				as itm01ItemCd
+		, itm01_item_nm				as itm01ItemNm
+		, itm01_item_enm			as itm01ItemEnm
+		, itm01_short_cd			as itm01ShortCd
+		, itm01_iss_type			as itm01IssType
+		, itm01_stk_type			as itm01StkType
+		, itm01_list_type			as itm01ListType
+		, itm01_market_type			as itm01MarketType
+		, itm01_par					as itm01Par
+		, itm01_iss_co_cd			as itm01IssCoCd
+	from
+		itm01_item
+	where 1=1
+		and itm01_item_cd = #{itemCode}		
+</select>
+
+<insert id="insert" parameterType="Itm01Item">
+	insert into itm01_item
+		(	itm01_item_cd, itm01_item_nm, itm01_item_enm
+			, itm01_short_cd, itm01_iss_type, itm01_stk_type
+			, itm01_list_type, itm01_market_type, itm01_par
+			, itm01_iss_co_cd
+		)
+	values (#{itm01ItemCd}, #{itm01ItemNm}, #{itm01ItemEnm},
+			#{itm01ShortCd}, #{itm01IssType}, #{itm01StkType},
+			#{itm01ListType}, #{itm01MarketType}, #{itm01Par},
+			#{itm01IssCoCd})
+</insert>
+
+<update id="update" parameterType="Itm01Item">
+	update
+		itm01_item
+	set
+		itm01_item_cd = #{itm01ItemCd}
+		, itm01_item_nm = #{itm01ItemNm}
+		, itm01_item_enm = #{itm01ItemEnm}
+		, itm01_short_cd = #{itm01ShortCd}
+		, itm01_iss_type = #{itm01IssType}
+		, itm01_stk_type = #{itm01StkType}
+		, itm01_list_type = #{itm01ListType}
+		, itm01_market_type = #{itm01MarketType}
+		, itm01_par = #{itm01Par}
+		, itm01_iss_co_cd = #{itm01IssCoCd}
+	where 1=1
+		and itm01_item_cd = #{itm01ItemCd}
+</update>
+
+<delete id="delete" parameterType="Itm01Item">
+	delete from itm01_item
+	where 1=1
+	and itm01_item_cd = #{itm01ItemCd}
+</delete>
 
 </mapper>
