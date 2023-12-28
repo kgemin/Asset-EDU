@@ -45,7 +45,7 @@
                     <td class="text-end">상장구분</td>
                     <td>
                         <form:select path="itm01ListType" class="form-select">
-                            <form:option value="" />
+                            <form:option value="" label="선택" />
                             <form:options items="${stkListTypeList}" itemValue="com02DtlCd" itemLabel="com02CodeNm"/> 
                         </form:select>
                     </td>
@@ -55,7 +55,7 @@
                     <td class="text-end">시장구분</td>
                     <td>
                         <form:select path="itm01MarketType" class="form-select">
-                            <form:option value="" />
+                            <form:option value="" label="선택" />
                             <form:options items="${marketTypeList}" itemValue="com02DtlCd" itemLabel="com02CodeNm"/> 
                         </form:select>
                     </td>
@@ -65,7 +65,7 @@
                     <td class="text-end">증권종류</td>
                     <td>
                         <form:select path="itm01StkType" class="form-select">
-                            <form:option value="" />
+                            <form:option value="" label="선택" />
                             <form:options items="${stkTypeList}" itemValue="com02DtlCd" itemLabel="com02CodeNm"/> 
                         </form:select>
                     </td>

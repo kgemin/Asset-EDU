@@ -31,6 +31,13 @@
 		itm01_item
 	where 1=1
 		<include refid="whereCondition" />
+		
+		<if test="pageAttr != null ">
+	      	OFFSET ${pageAttr.offset}
+		 </if>
+		 <if test="pageAttr != null">
+		 	LIMIT ${pageAttr.limit}
+		 </if>
 </select>
 
 <select id="selectCount" parameterType="QueryAttr" resultType="Long">
